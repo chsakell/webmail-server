@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using WebmailServer.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace webmail_server
 {
@@ -29,6 +31,9 @@ namespace webmail_server
         {
             // Add framework services.
             services.AddMvc();
+
+            var connection = @"Server=developer-pc;Database=webmail;Trusted_Connection=True;";
+            services.AddDbContext<webmailContext>(options => options.UseSqlServer(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
