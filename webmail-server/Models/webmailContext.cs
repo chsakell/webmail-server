@@ -11,8 +11,11 @@ namespace WebmailServer.Models
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserEmail> UserEmail { get; set; }
 
-        public webmailContext(DbContextOptions<webmailContext> options) : base(options)
-        { }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+            optionsBuilder.UseSqlServer(@"Server=developer-pc;Database=webmail;Trusted_Connection=True;");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,6 +43,7 @@ namespace WebmailServer.Models
                 entity.HasOne(d => d.Author)
                     .WithMany(p => p.Email)
                     .HasForeignKey(d => d.AuthorId)
+                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Email_User");
             });
 
@@ -75,6 +79,11 @@ namespace WebmailServer.Models
                     .HasForeignKey(d => d.EmailId)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_UserEmail_Email");
+
+                entity.HasOne(d => d.Parent)
+                    .WithMany(p => p.InverseParent)
+                    .HasForeignKey(d => d.ParentId)
+                    .HasConstraintName("FK_UserEmail_UserEmail");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserEmail)

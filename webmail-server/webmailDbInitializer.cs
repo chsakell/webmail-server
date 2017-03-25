@@ -66,8 +66,8 @@ namespace WebmailServer
                     Body = "Email contents here bla bla bla",
                     UserEmail = new List<UserEmail>()
                     {
-                        new UserEmail() { CategoryId = 4, UserId = 2, EmailId = 2 },
-                        new UserEmail() { CategoryId = 1, UserId = 1, EmailId = 1 },
+                        new UserEmail() { CategoryId = 4, UserId = 2, EmailId = 2, ParentId = 2 },
+                        new UserEmail() { CategoryId = 1, UserId = 1, EmailId = 2 },
                         new UserEmail() { CategoryId = 1, UserId = 3, EmailId = 2, IsRead = true },
                         new UserEmail() { CategoryId = 1, UserId = 4, EmailId = 2, IsRead = true }
                     }

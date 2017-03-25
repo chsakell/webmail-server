@@ -20,6 +20,12 @@ namespace webmail_server.Controllers
             _context = context;
         }
 
+        [HttpGet("init/{id}", Name = "Init")]
+        public IEnumerable<Email> Init(int id)
+        {
+            return _context.Email;
+        }
+
         // GET: api/Emails
         [HttpGet]
         public IEnumerable<Email> GetEmail()
