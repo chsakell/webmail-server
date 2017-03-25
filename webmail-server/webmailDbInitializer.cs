@@ -53,7 +53,7 @@ namespace WebmailServer
                     Body = "Email contents here",
                     UserEmail = new List<UserEmail>()
                     {
-                        new UserEmail() { CategoryId = 4, UserId = 1, EmailId = 1 },
+                        new UserEmail() { CategoryId = 4, UserId = 1, EmailId = 1, IsRead = true },
                         new UserEmail() { CategoryId = 1, UserId = 2, EmailId = 1 },
                         new UserEmail() { CategoryId = 5, UserId = 3, EmailId = 1, IsRead = true },
                     }
@@ -66,14 +66,28 @@ namespace WebmailServer
                     Body = "Email contents here bla bla bla",
                     UserEmail = new List<UserEmail>()
                     {
-                        new UserEmail() { CategoryId = 4, UserId = 2, EmailId = 2, ParentId = 2 },
+                        new UserEmail() { CategoryId = 4, UserId = 2, EmailId = 2, IsRead = true, ParentId = 2 },
                         new UserEmail() { CategoryId = 1, UserId = 1, EmailId = 2 },
                         new UserEmail() { CategoryId = 1, UserId = 3, EmailId = 2, IsRead = true },
                         new UserEmail() { CategoryId = 1, UserId = 4, EmailId = 2, IsRead = true }
                     }
                 };
 
-                context.Email.AddRange(new Email[] { sentByChris, sentBySamuel });
+                Email sentByGiorgio = new Email()
+                {
+                    AuthorId = 3,
+                    Subject = "Test email from Giorgio",
+                    Body = "Email contents hello world!!1",
+                    UserEmail = new List<UserEmail>()
+                    {
+                        new UserEmail() { CategoryId = 4, UserId = 3, EmailId = 3, IsRead = true },
+                        new UserEmail() { CategoryId = 1, UserId = 1, EmailId = 3, IsRead = true },
+                        new UserEmail() { CategoryId = 1, UserId = 4, EmailId = 3, IsRead = true },
+                        new UserEmail() { CategoryId = 1, UserId = 5, EmailId = 3 }
+                    }
+                };
+
+                context.Email.AddRange(new Email[] { sentByChris, sentBySamuel, sentByGiorgio });
 
                 context.SaveChanges();
             }
