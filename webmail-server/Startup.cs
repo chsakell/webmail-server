@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using WebmailServer.Models;
 using Microsoft.EntityFrameworkCore;
 using WebmailServer;
+using AutoMapper;
+using WebmailServer.Mappings;
 
 namespace webmail_server
 {
@@ -32,6 +34,8 @@ namespace webmail_server
         {
             // Enable Cors
             services.AddCors();
+
+            Mapper.Initialize(cfg => cfg.AddProfile<DomainToViewModelMappingProfile>());
 
             // Add framework services.
             services.AddMvc();

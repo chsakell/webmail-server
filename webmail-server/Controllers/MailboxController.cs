@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebmailServer.Models;
 using WebmailServer.ViewModels;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace webmail_server.Controllers
 {
@@ -30,13 +32,13 @@ namespace webmail_server.Controllers
                 .GroupBy(e => e.CategoryId)
                 .ToList();
 
-            foreach(var group in userEmails)
+            foreach (var group in userEmails)
             {
                 MailboxFolder folder = new MailboxFolder()
                 {
-                     Category = group.Key,
-                     TotalEmails = group.Count(),
-                     UnreadEmails = group.Where(e => e.IsRead == false).Count()
+                    Category = group.Key,
+                    TotalEmails = group.Count(),
+                    UnreadEmails = group.Where(e => e.IsRead == false).Count()
                 };
 
                 mailboxFolders.Add(folder);
@@ -44,6 +46,34 @@ namespace webmail_server.Controllers
 
 
             return mailboxFolders;
+        }
+
+        [HttpGet("user/{userId}/folder/{category}/emails", Name = "folderEmails")]
+        public FolderEmailsVM FolderEmails(int userId, int category)
+        {
+            List<int> userIds = new List<int>();
+            
+            List<UserEmail> userEmails = _context.UserEmail.Include(ue => ue.Email)
+                .Where(e => e.UserId == userId && e.CategoryId == category).ToList();
+
+            List<Email> emails = _context.Email
+                .Include(e => e.UserEmail)
+                .Where(e => (userEmails.Select(ue => ue.EmailId).Contains(e.Id)))
+                .ToList();
+
+            foreach (Email e in emails)
+            {
+                userIds.AddRange(e.UserEmail.Select(ue => ue.UserId).Distinct());
+            }
+            userIds = userIds.Distinct().ToList();
+            List<User> users = _context.User.Where(u => userIds.Contains(u.Id)).ToList();
+
+            return new FolderEmailsVM()
+            {
+                emails = Mapper.Map<List<EmailVM>>(emails),
+                userEmails = Mapper.Map<List<UserEmailVM>>(userEmails),
+                users = Mapper.Map<List<UserVM>>(users)
+            };
         }
     }
 }
