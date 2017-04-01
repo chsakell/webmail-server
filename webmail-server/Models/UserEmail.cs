@@ -11,12 +11,9 @@ namespace WebmailServer.Models
         public int CategoryId { get; set; }
         public bool? IsRead { get; set; }
         public bool? IsStarred { get; set; }
-        public int? ParentId { get; set; }
 
         public virtual Category Category { get; set; }
         public virtual Email Email { get; set; }
-        public virtual UserEmail Parent { get; set; }
-        public virtual ICollection<UserEmail> InverseParent { get; set; }
         public virtual User User { get; set; }
     }
 }

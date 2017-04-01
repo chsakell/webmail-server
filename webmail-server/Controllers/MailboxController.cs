@@ -75,5 +75,33 @@ namespace webmail_server.Controllers
                 users = Mapper.Map<List<UserVM>>(users)
             };
         }
+
+        [HttpGet("email/{id}/history", Name = "emailHistory")]
+        public EmailHistoryVM EmailHistory(int id)
+        {
+            List<int> userIds = new List<int>();
+            List<Email> emails = new List<Email>();
+            List<User> users = new List<WebmailServer.Models.User>();
+
+            Email email = _context.Email
+                .Include(e => e.Parent)
+                .ThenInclude(e => e.UserEmail).Where(e => e.Id == id).First();
+
+            if(email.Parent != null)
+            {
+                userIds.AddRange(email.Parent.UserEmail.Select(ue => ue.UserId).Distinct());
+            }
+
+            userIds = userIds.Distinct().ToList();
+
+            emails.Add(email.Parent);
+            users = _context.User.Where(u => userIds.Contains(u.Id)).ToList();
+
+            return new EmailHistoryVM()
+            {
+                emails = Mapper.Map<List<EmailVM>>(emails),
+                users = Mapper.Map<List<UserVM>>(users)
+            };
+        }
     }
 }

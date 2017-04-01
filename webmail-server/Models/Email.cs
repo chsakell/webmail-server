@@ -15,8 +15,11 @@ namespace WebmailServer.Models
         public string Body { get; set; }
         public DateTime? DateCreated { get; set; }
         public int AuthorId { get; set; }
+        public int? ParentId { get; set; }
 
         public virtual ICollection<UserEmail> UserEmail { get; set; }
         public virtual User Author { get; set; }
+        public virtual Email Parent { get; set; }
+        public virtual ICollection<Email> InverseParent { get; set; }
     }
 }
