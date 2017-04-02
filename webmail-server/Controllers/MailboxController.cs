@@ -89,12 +89,12 @@ namespace webmail_server.Controllers
 
             if(email.Parent != null)
             {
+                emails.Add(email.Parent);
                 userIds.AddRange(email.Parent.UserEmail.Select(ue => ue.UserId).Distinct());
             }
 
             userIds = userIds.Distinct().ToList();
 
-            emails.Add(email.Parent);
             users = _context.User.Where(u => userIds.Contains(u.Id)).ToList();
 
             return new EmailHistoryVM()
