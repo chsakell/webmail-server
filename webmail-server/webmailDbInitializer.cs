@@ -72,7 +72,7 @@ namespace WebmailServer
                     ParentId = 1
                 };
 
-                /*
+                
                 Email sentByGiorgio = new Email()
                 {
                     AuthorId = 3,
@@ -86,9 +86,9 @@ namespace WebmailServer
                         new UserEmail() { CategoryId = 1, UserId = 5, EmailId = 3 }
                     }
                 };
-                */
+                
 
-                context.Email.AddRange(new Email[] { sentByChris, sentBySamuel });
+                context.Email.AddRange(new Email[] { sentByChris, sentBySamuel, sentByGiorgio });
 
                 context.SaveChanges();
             }
