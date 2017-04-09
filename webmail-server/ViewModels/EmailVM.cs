@@ -13,5 +13,6 @@ namespace WebmailServer.ViewModels
         public string Body { get; set; }
         public int[] Receivers { get; set; }
         public DateTime DateCreated { get; set; }
+        public int? ParentId { get; set; }
     }
 }

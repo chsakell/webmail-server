@@ -1,7 +1,7 @@
 ﻿select * from [User]
 select * from [Email]
 select * from [UserEmail]
-
+select * from Category
 /*
 delete from [UserEmail];
 delete from [Email];

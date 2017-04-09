@@ -103,5 +103,36 @@ namespace webmail_server.Controllers
                 users = Mapper.Map<List<UserVM>>(users)
             };
         }
+
+        [HttpPost("send")]
+        public void PostEmail([FromBody] EmailVM emailVm)
+        {
+            Email email = new Email()
+            {
+                AuthorId = emailVm.AuthorId,
+                Subject = emailVm.Subject,
+                Body = emailVm.Body,
+                DateCreated = DateTime.Now,
+                ParentId = emailVm.ParentId
+            };
+
+            foreach(var receiver in emailVm.Receivers)
+            {
+                email.UserEmail.Add(new UserEmail()
+                {
+                    CategoryId = 1,
+                    UserId = receiver
+                });
+            }
+
+            email.UserEmail.Add(new UserEmail()
+            {
+                CategoryId = 4,
+                UserId = emailVm.AuthorId
+            });
+
+            _context.Email.Add(email);
+             _context.SaveChanges();
+        }
     }
 }
